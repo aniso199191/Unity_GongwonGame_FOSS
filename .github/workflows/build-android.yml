@@ -27,38 +27,11 @@ jobs:
           unity-version: 2022.3.48f1
           modules: android
 
-      - name: Activate License (Attempt 1)
-        id: activate1
-        uses: RageAgainstThePixel/activate-unity-license@v2
-        continue-on-error: true
-        with:
-          license: 'Personal'
-          username: ${{ secrets.UNITY_EMAIL }}
-          password: ${{ secrets.UNITY_PASSWORD }}
-
-      - name: Activate License (Attempt 2)
-        id: activate2
-        if: steps.activate1.outcome == 'failure'
-        uses: RageAgainstThePixel/unity-activate@v2
-        continue-on-error: true
+      - name: Activate Unity License
+        uses: game-ci/unity-license-activate@v1
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-
-      - name: Activate License (Attempt 3)
-        id: activate3
-        if: steps.activate2.outcome == 'failure'
-        uses: game-ci/unity-activate@v2
-        continue-on-error: true
-        env:
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-
-      - name: Check License Status
-        if: steps.activate1.outcome == 'failure' && steps.activate2.outcome == 'failure' && steps.activate3.outcome == 'failure'
-        run: |
-          echo "所有激活方式均失败，请检查 Secrets 或手动干预。"
-          exit 1
 
       - name: Build Android APK
         uses: game-ci/unity-builder@v4

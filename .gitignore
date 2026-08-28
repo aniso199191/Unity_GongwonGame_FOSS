@@ -1,0 +1,12 @@
+/Library/
+/Temp/
+/obj/
+/Build/
+/UserSettings/
+*.csproj
+*.sln
+.idea/
+.vs/
+ExportedObj/
+*.apk
+*.aab
